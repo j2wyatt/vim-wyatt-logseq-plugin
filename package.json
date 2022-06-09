@@ -1,0 +1,23 @@
+{
+  "name": "vim-wyatt-logseq-plugin",
+  "version": "1.0.0",
+  "author": "wyattJ",
+  "description": "make logseq editting like vim",
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel ./index.html --public-url ./",
+    "build": "parcel build --public-url . --no-source-maps index.html"
+  },
+  "browserslist": [
+    "chrome 80"
+  ],
+  "logseq": {
+    "main": "dist/index.html",
+    "id": "vim-wyatt",
+    "icon": "public/logseq.png"
+  },
+  "devDependencies": {
+    "@logseq/libs": "^0.0.6",
+    "parcel": "^2.0.0"
+  }
+}
