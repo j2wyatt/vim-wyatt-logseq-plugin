@@ -1,6 +1,6 @@
 # vim-wyatt-logseq-plugin
 The purpose of this plugin is to give logseq a vim-like editing experience. 
-中文文档在项目里 `README.zh-CN.md`
+中文文档在项目里 [`README.zh-CN.md`](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/blob/main/README.zh-CN.md "中文版")
 
 ![Function Show](./public/demo.gif "happy hacking")
 ## Supported keys
