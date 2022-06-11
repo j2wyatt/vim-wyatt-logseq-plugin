@@ -89,3 +89,24 @@ export async function getChildrenById(eleTree, id) {
         }
     }
 }
+
+// 选择 block 树的最后一个元素
+export async function lastBlock(eleTree) {
+    for (let i = 0; i < eleTree.length; i++) {
+        const ele = eleTree[eleTree.length - 1]
+        if (ele.children.length > 0) {
+            if (ele['collapsed?']) {
+                return ele
+            } else {
+                const child = await lastBlock(ele.children)
+                return child
+            }
+        } else {
+            return ele
+        }
+    }
+}
+
+export function sleep(time) {
+    return new Promise((resolve) => setTimeout(resolve, time));
+}

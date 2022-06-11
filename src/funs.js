@@ -1,5 +1,6 @@
 import '@logseq/libs'
-import {hotKeyEvent, sortBlock, getBlockById, getChildrenById} from './tool.js'
+import {hotKeyEvent, sortBlock, getBlockById, getChildrenById, lastBlock, sleep} from './tool.js'
+import {log} from "@logseq/libs/dist/postmate";
 
 
 export async function down(key, e) {
@@ -130,8 +131,34 @@ export async function gTake(key, e) {
 }
 
 export async function endOfPage(key, e) {
-    const eleTree = await logseq.Editor.getCurrentPageBlocksTree()
-    const block = eleTree[eleTree.length - 1]
+    let eleTree = await logseq.Editor.getCurrentPageBlocksTree()
+    const uuidArray = await sortBlock(eleTree)
+    // 选择最后一个 bolock 的最后一个子元素
+    let block = await lastBlock(eleTree)
+    let lastBlockIndex = uuidArray.indexOf(block.uuid)
+    // 选择有内容的块
+    for (let i = 0; i < uuidArray.length; i++) {
+        const uIndex = lastBlockIndex - i
+        const mayEle = await logseq.Editor.getBlock(uuidArray[uIndex])
+        if (mayEle.content != '') {
+            block.uuid = uuidArray[uIndex]
+            break;
+        }
+    }
+    const contentId = `#block-content-${block.uuid}`
+    const viewPos = top.document.querySelector('#main-content-container').scrollTop
+    let newPos = viewPos + (31 * uuidArray.length)
+    const halfHeight = Math.ceil(newPos / 2)
+    for (let i = 0; i < 100; i++) {
+        newPos += (i * halfHeight)
+        top.document.querySelector('#main-content-container').scrollTop = newPos
+        await sleep(100)
+        const target = top.document.querySelector(contentId)
+        if (target) {
+            console.log('最后一个元素出现了')
+            break;
+        }
+    }
     await logseq.Editor.editBlock(block.uuid, {
         pos: 0,
     });
@@ -181,7 +208,7 @@ export async function killTake(key, e) {
 
 export async function killBlock(key, e) {
     const bb = await logseq.Editor.getCurrentBlock()
-    textBox = bb.content
+    global.textBox = bb.content
     await logseq.App.invokeExternalCommand("logseq.editor/down");
     await logseq.Editor.removeBlock(bb.uuid)
 }
@@ -192,7 +219,7 @@ export async function redo(key, e) {
 
 export async function paste(key, e) {
     let currentBlock = await logseq.Editor.getCurrentBlock()
-    await logseq.Editor.insertBlock(currentBlock.uuid, textBox, {before: false})
+    await logseq.Editor.insertBlock(currentBlock.uuid, global.textBox, {before: false})
 }
 
 export async function newLine(key, e) {
@@ -255,9 +282,83 @@ export async function goBlockEndChild(key, e) {
         const eleTree = await logseq.Editor.getCurrentPageBlocksTree()
         const ch = await getChildrenById(eleTree, bb.id)
         const lastChildren = ch[ch.length - 1]
+        console.log(lastChildren)
         // 选中最后一个子块
         await logseq.Editor.editBlock(lastChildren.uuid, {
             pos: 0,
         });
     }
+}
+
+export async function closeTab(key, e) {
+    await hotKeyEvent(top.document, 'keydown', 87, false, true, true);
+}
+
+export async function zoomIn(key, e) {
+    let blockUUID = await logseq.Editor.getCurrentBlock();
+    await logseq.Editor.editBlock(blockUUID.uuid);
+    await logseq.App.invokeExternalCommand("logseq.editor/zoom-in");
+}
+
+export async function zoomOut(key, e) {
+    let blockUUID = await logseq.Editor.getCurrentBlock();
+    await logseq.Editor.editBlock(blockUUID.uuid);
+    await logseq.App.invokeExternalCommand("logseq.editor/zoom-out")
+}
+
+export async function reDraw(key, e) {
+    if (global.reDrawLevel == 1) {
+        global.reDrawLevel = 2
+        await centerDraw(key, e)
+    } else if (global.reDrawLevel == 2) {
+        global.reDrawLevel = 3
+        await topDraw(key, e)
+    } else {
+        global.reDrawLevel = 1
+        await downDraw(key, e)
+    }
+}
+
+async function currentBlockOffsetTop() {
+    let block = await logseq.Editor.getCurrentBlock();
+    const divId = `[blockid='${block.uuid}']`
+    const div = top.document.querySelector(divId)
+    const hideHeight = top.document.querySelector('#main-content-container').scrollTop
+    // 相对于整体页面顶部的距离
+    let offsetTop = div.offsetTop
+    let parentDiv = div.offsetParent
+    // 找到最上层父元素
+    while (parentDiv.getAttribute('class') != 'relative') {
+        parentDiv = parentDiv.offsetParent
+        offsetTop += parentDiv.offsetTop
+    }
+    return offsetTop
+}
+
+// 当点块顶边垂直居中
+async function centerDraw(key, e) {
+    const viewHeight = top.document.querySelector('#main-content-container').clientHeight
+    const centerHeight = Math.ceil(viewHeight / 2)
+    const offsetTop = await currentBlockOffsetTop()
+    // 两种特殊情况，距页顶不足一半视高，距页底不足一半视高
+    if (offsetTop <= centerHeight) {
+        return
+    }
+    const topHeight = offsetTop - centerHeight + 120
+    top.document.querySelector('#main-content-container').scrollTop = topHeight
+}
+
+// 当前块顶部滚动至页面顶部
+async function topDraw(key, e) {
+    const offsetTop = await currentBlockOffsetTop()
+    top.document.querySelector('#main-content-container').scrollTop = offsetTop + 50
+}
+
+// 当前块滚动至页面底部
+async function downDraw(key, e) {
+    const hideHeight = top.document.querySelector('#main-content-container').scrollTop
+    const viewHeight = top.document.querySelector('#main-content-container').clientHeight
+    const offsetTop = await currentBlockOffsetTop()
+    const topHeight = hideHeight - (viewHeight - (offsetTop - hideHeight)) + 120
+    top.document.querySelector('#main-content-container').scrollTop = topHeight
 }

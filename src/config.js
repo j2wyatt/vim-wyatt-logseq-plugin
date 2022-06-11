@@ -1,4 +1,5 @@
 import * as f from './funs'
+import '@logseq/libs'
 
 // 1 单键，2 双字母键，3 修饰加字母键
 var bindKey = [
@@ -26,7 +27,11 @@ var bindKey = [
     {name: 'o', type: 1, fun: f.newLine},
     {name: '/', type: 1, fun: f.search},
     {name: 'Tab', type: 1, fun: f.toggleExpand},
-    {name: 'A-Enter', type: 3, com: 'altKey', key: 'Enter', fun: f.newBlock},
+    // {name: 'Alt-Enter', type: 3, com: 'altKey', key: 'Enter', fun: f.newBlock},
+    {name: 'q', type: 1, fun: f.closeTab},
+    {name: 'S-H', type: 3, com: 'shiftKey', key: 'H', fun: f.zoomOut},
+    {name: 'S-L', type: 3, com: 'shiftKey', key: 'L', fun: f.zoomIn},
+    {name: 'C-l', type: 3, com: 'ctrlKey', key: 'l', fun: f.reDraw},
 ]
 
 

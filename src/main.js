@@ -1,9 +1,15 @@
 import '@logseq/libs'
 import conf from './config.js'
+import {sleep} from "./tool";
 
 
 // 注入方法
 async function main() {
+    // 本地存储
+    // const item = await localStorage.getItem('vimWyatt')
+    // if (!item) {
+    //     await localStorage.setItem("vimWyatt", {pageReade: []})
+    // }
     startKeyListen()
 }
 
@@ -20,11 +26,13 @@ global.waitAction = ''
 global.noAction = false
 // 剪切板
 global.textBox = ''
+// 重绘的阶段
+global.reDrawLevel = 1
 // 自定按键命令
 var bindKey = []
 
-function startKeyListen() {
-    loadBindKey(privateBind)
+async function startKeyListen() {
+    await loadBindKey(privateBind)
     // 监听按键事件
     top.document.onkeydown = keyEventHandler
 }
@@ -32,8 +40,6 @@ function startKeyListen() {
 
 // 按键事件处理
 async function keyEventHandler(e) {
-    console.log(e)
-    console.log(bindKey)
     // 过滤单个修饰键
     const singleModify = await isSingleModifyKey(e)
     if (singleModify) {
@@ -86,7 +92,13 @@ async function unLockAction() {
                         caret-color: #ffcc00;
                     }
             `)
-    await logseq.App.invokeExternalCommand("logseq.editor/down");
+    await logseq.App.invokeExternalCommand("logseq.editor/up");
+    // const page = await logseq.Editor.getCurrentPage()
+    // await logseq.Editor.appendBlockInPage(page.name, '')
+    // setTimeout(async () => {
+    //     let blockUUID = await logseq.Editor.getCurrentBlock();
+    //     console.log(blockUUID)
+    // }, 1000)
 }
 
 // 过滤系统组合键
@@ -201,11 +213,15 @@ async function editModespecialKey(e) {
 
 // 处理命令模式的按键
 async function commandModeHandler(e) {
+    // 包含修饰键的组合命令
+    const comMode = e.altKey || e.ctrlKey || e.shiftKey || e.metaKey
     // 命令模式会停止其余所有按键
     e.preventDefault()
     // 监听第二个字母
     if (global.waitAction != '') {
         await secondKeyHandler(e.key)
+    } else if (comMode) {
+        await comKeyHandler(e.key, e)
     } else {
         await firstKeyHandler(e.key, e)
     }
@@ -215,8 +231,6 @@ async function commandModeHandler(e) {
 async function firstKeyHandler(key, e) {
     await sigleKeyHandler(key, e)
     await doubleKeyHandler(key, e)
-    await comKeyHandler(key, e)
-    await comKeyHandler(key, e)
 }
 
 // 单子母命令
@@ -264,3 +278,22 @@ async function secondKeyHandler(newAction) {
     }
     global.waitAction = ''
 }
+
+//
+// async function savePageRead() {
+//     const page = await logseq.Editor.getCurrentPage()
+//     const hideHeight = top.document.querySelector('#main-content-container').scrollTop
+//     if (page && block) {
+//         // 取得 scrollTop
+//
+//         // 更新 vimWyatt
+//
+//     }
+// }
+//
+// async function startPageRead() {
+//     while (true) {
+//         await sleep(3000)
+//         await savePageRead()
+//     }
+// }
