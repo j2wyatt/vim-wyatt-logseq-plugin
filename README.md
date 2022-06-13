@@ -1,20 +1,25 @@
 # vim-wyatt-logseq-plugin
-The purpose of this plugin is to give logseq a vim-like editing experience. 
-
-中文文档 [README.zh-CN.md](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/blob/main/README.zh-CN.md "中文版")
-
-直接解压版 [压缩包](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/releases/download/Pro/vim-wyatt-logseq-plugin.zip )
+The purpose of this plugin is to give logseq a vim-like editing experience
 
 ![Function Show](./public/demo.gif "happy hacking")
 ## Supported keys
 - `j` moves the cursor down
 - `k` moves the cursor up
+- `C-l` redraw
+- ; char jump mode
 - The specific content is here `src/config`
-  ![Function display](./public/config.jpg "happy hacking")
+  ![config](./public/config.jpg "happy hacking")
 - The current key position should be enough for me, you can customize it if you need it
+## start method
+- clone this project
+- npm install
+- npm run build
+- Manually load the plugin in logseq, just select the project root directory directly
+
 ## draw the focus
-- Currently, the top reference can only be accessed by loading the plugin locally by means of Load unpacked plugin.
 - I couldn't have done this without the api that the logseq team has released
+- The purpose of publishing plug-ins is to attract others, hoping to see better vim plug-ins
+
 ## Origin
 I have always used emacs to write things, and the combination of emacs + evil makes my writing a pleasure. The artifact will get tired after using it for a long time. At this time, logseq came into my field of vision, so I wanted to change my taste.
 But logseq does not have a vim-like editing experience, which has been preventing me from using logseq.
@@ -39,12 +44,6 @@ top.document.onkeydown = async function (e) {
   await logseq.Editor.editBlock(blockUUID.uuid);
 }
 ````
-The point is that the top object, as far as I understand it, has such shortcomings.
-- Logseq plugins published in the market run in an iframe sandbox in a separate domain by default, so visit
-- The ability to reference the top view of the main view (pointing to the window object of the main view) is prohibited by the cross-origin security policy.
-- Currently, the top reference can only be accessed by loading the plugin locally by means of Load unpacked plugin.
-- Because the API is not used, the stability is questionable
-- I have not tried this shortcoming. I do not plan to release it to the market. If you like it, you can do it yourself. This is the purpose of my open source it. After all, if such a plugin already exists, I don't have to write it myself.
 
 ## grateful
 - logseq
