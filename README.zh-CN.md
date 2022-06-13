@@ -6,6 +6,7 @@
 - `j` 向下移动光标
 - `k` 向上移动光标
 -  `C-l` redraw
+- ; 字符选择模式（char jump mode)
 - 具体内容都在这里 `src/config`
   ![配置](./public/config.jpg "happy hacking")
 - 目前的键位对我来说应该已经够了，您要是有需求的话可以自定义
