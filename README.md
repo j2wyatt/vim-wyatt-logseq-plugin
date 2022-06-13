@@ -2,7 +2,7 @@
 The purpose of this plugin is to give logseq a vim-like editing experience
 
 
-Chinese document [README.zh-CN.md](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/blob/main/README.zh-CN.md "Chinese version")
+中文文档 [README.zh-CN.md](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/blob/main/README.zh-CN.md "Chinese version")
 
 Direct decompression version [compressed package](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/releases/download/1.1.0/vim-wyatt-logseq-plugin.zip )
 
