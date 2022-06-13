@@ -1,15 +1,13 @@
 import '@logseq/libs'
 import conf from './config.js'
 import {sleep} from "./tool";
+import {startSmart} from "./smart";
+import {charJump} from "./funs";
 
 
 // 注入方法
 async function main() {
-    // 本地存储
-    // const item = await localStorage.getItem('vimWyatt')
-    // if (!item) {
-    //     await localStorage.setItem("vimWyatt", {pageReade: []})
-    // }
+    startSmart()
     startKeyListen()
 }
 
@@ -28,6 +26,12 @@ global.noAction = false
 global.textBox = ''
 // 重绘的阶段
 global.reDrawLevel = 1
+// 单字符选择
+global.charJump = false
+// jump 字符
+global.jumpChar = ''
+// jump 匹配字符
+global.matchChar = ''
 // 自定按键命令
 var bindKey = []
 
@@ -50,14 +54,25 @@ async function keyEventHandler(e) {
     }
     // 解锁状态下识别键位
     else if (!global.noAction) {
-        // 放行一下组合命令
-        let composeKey = await isSysComplexKey(e)
-        console.log(`${composeKey ? '系统按键' : '非系统按键'}: ${e.key}`)
-        if (composeKey) {
-            // 监测到系统按键，某些功能需要输入字符，锁定按键输入
-            await lockActionBySys(e)
+        // 字符匹配模式
+        if (global.charJump) {
+            let composeKey = e.altKey || e.ctrlKey || e.shiftKey || e.metaKey
+            e.preventDefault()
+            if (composeKey) {
+                global.charJump = false
+            } else {
+                await charJump(e.key)
+            }
         } else {
-            await privateKeyHandler(e)
+            // 放行一下组合命令
+            let composeKey = await isSysComplexKey(e)
+            console.log(`${composeKey ? '系统按键' : '非系统按键'}: ${e.key}`)
+            if (composeKey) {
+                // 监测到系统按键，某些功能需要输入字符，锁定按键输入
+                await lockActionBySys(e)
+            } else {
+                await privateKeyHandler(e)
+            }
         }
     }
 }
@@ -93,12 +108,6 @@ async function unLockAction() {
                     }
             `)
     await logseq.App.invokeExternalCommand("logseq.editor/up");
-    // const page = await logseq.Editor.getCurrentPage()
-    // await logseq.Editor.appendBlockInPage(page.name, '')
-    // setTimeout(async () => {
-    //     let blockUUID = await logseq.Editor.getCurrentBlock();
-    //     console.log(blockUUID)
-    // }, 1000)
 }
 
 // 过滤系统组合键
@@ -279,21 +288,3 @@ async function secondKeyHandler(newAction) {
     global.waitAction = ''
 }
 
-//
-// async function savePageRead() {
-//     const page = await logseq.Editor.getCurrentPage()
-//     const hideHeight = top.document.querySelector('#main-content-container').scrollTop
-//     if (page && block) {
-//         // 取得 scrollTop
-//
-//         // 更新 vimWyatt
-//
-//     }
-// }
-//
-// async function startPageRead() {
-//     while (true) {
-//         await sleep(3000)
-//         await savePageRead()
-//     }
-// }

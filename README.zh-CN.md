@@ -5,6 +5,7 @@
 ## 支持的键位
 - `j` 向下移动光标
 - `k` 向上移动光标
+-  `C-l` redraw
 - 具体内容都在这里 `src/config`
   ![配置](./public/config.jpg "happy hacking")
 - 目前的键位对我来说应该已经够了，您要是有需求的话可以自定义
@@ -13,9 +14,11 @@
 - npm install
 - npm run build
 - 在 logseq 里手动载入插件，直接选择项目根目录即可
+
 ## 画重点
-- 目前只有在本地通过 Load unpacked plugin 的方式加载插件，才能访问到 top 引用。
 - 如果没有 logseq 团队已经发布的 api，我是不可能做到这些的
+- 发布插件的目的是抛砖引玉，希望能出现更好的 vim 插件
+
 ## 来由
 一直以来，我都是使用 emacs 来写东西的，emacs + evil 的配合让我写字变成一种享受。 神器用久了也是会腻的，这时候 logseq 进入了我的视野，所以我就想换换口味。
 但是 logseq 一个没有类似 vim 的编辑体验，这一直阻碍着我使用 logseq。
@@ -40,12 +43,6 @@ top.document.onkeydown = async function (e) {
   await logseq.Editor.editBlock(blockUUID.uuid);
 }
 ```
-要点就是 top 这个对象,根据我了解它有这样的缺憾.
-- 发布在市场中的 Logseq 插件默认情况是运行在独立域名中的 iframe 沙盒里，所以访问
-- 主视图 top 引用（指向到主视图的 window 对象）的能力被跨域安全策略禁止.
-- 目前只有在本地通过 Load unpacked plugin 的方式加载插件，才能访问到 top 引用。
-- 因为用的不是 api,所以稳定性存疑
-- 这个缺憾我也没有试过，我不打算发布它到市场，大家喜欢的话可以自己做，这就是我开源它的目的。 毕竟要是已经有这样的插件，我也不用自己写了。
 
 ## 感谢
 - logseq

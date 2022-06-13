@@ -7,11 +7,11 @@ var bindKey = [
     {name: 'k', type: 1, fun: f.up},
     {name: 'l', type: 1, fun: f.right},
     {name: 'h', type: 1, fun: f.left},
-    {name: 'w', type: 1, fun: f.forward},
-    {name: 'b', type: 1, fun: f.backward},
+    {name: 'w', type: 1, fun: f.forword},
+    {name: 'b', type: 1, fun: f.backword},
     {name: '0', type: 1, fun: f.beginOfBlock},
     {name: 'S-A', type: 3, com: 'shiftKey', key: 'A', fun: f.editEndOfBlock},
-    {name: 'a', type: 1, fun: f.editEndOfWard},
+    {name: 'a', type: 1, fun: f.editEndOfWord},
     {name: 'f', type: 1, fun: f.downHalfPage},
     {name: 't', type: 1, fun: f.upHalfPage},
     {name: 'gg', type: 2, f: 'g', s: 'g', take: f.gTake, fun: f.beginOfPage},
@@ -19,7 +19,7 @@ var bindKey = [
     {name: 'gh', type: 2, f: 'g', s: 'h', take: f.gTake, fun: f.goBlockEndChild},
     {name: 'S-G', type: 3, com: 'shiftKey', key: 'G', fun: f.endOfPage},
     {name: 'yy', type: 2, f: 'y', s: 'y', take: f.copyTake, fun: f.copyBlock},
-    {name: 'x', type: 1, fun: f.forwardKillWard},
+    {name: 'x', type: 1, fun: f.forwordKillWord},
     {name: 'u', type: 1, fun: f.undo},
     {name: 'dd', type: 2, f: 'd', s: 'd', take: f.killTake, fun: f.killBlock},
     {name: 'C-r', type: 3, com: 'ctrlKey', key: 'r', fun: f.redo},
@@ -32,6 +32,7 @@ var bindKey = [
     {name: 'S-H', type: 3, com: 'shiftKey', key: 'H', fun: f.zoomOut},
     {name: 'S-L', type: 3, com: 'shiftKey', key: 'L', fun: f.zoomIn},
     {name: 'C-l', type: 3, com: 'ctrlKey', key: 'l', fun: f.reDraw},
+    {name: ';', type: 1, fun: f.jumpMode},
 ]
 
 

@@ -110,3 +110,51 @@ export async function lastBlock(eleTree) {
 export function sleep(time) {
     return new Promise((resolve) => setTimeout(resolve, time));
 }
+
+
+export async function makeCharName() {
+    let a = await one()
+    let b = await two()
+    let c = await three()
+    let res = a.concat(b).concat(c)
+    return res
+}
+
+// 一位
+function one() {
+    let res = []
+    let section = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    for (let i = 0; i < section.length; i++) {
+        res.push(section[i])
+    }
+    return res
+}
+
+// 两位
+function two() {
+    let res = []
+    let section = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    for (let i = 0; i < section.length; i++) {
+        for (let s = 0; s < section.length; s++) {
+            const word = section[i] + section[s]
+            res.push(word)
+        }
+    }
+    return res
+}
+
+
+// 三位
+function three() {
+    let res = []
+    let section = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+    for (let i = 0; i < section.length; i++) {
+        for (let s = 0; s < section.length; s++) {
+            for (let a = 0; a < section.length; a++) {
+                const word = section[i] + section[s] + section[a]
+                res.push(word)
+            }
+        }
+    }
+    return res
+}

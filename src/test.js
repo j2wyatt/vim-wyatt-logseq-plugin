@@ -58,7 +58,6 @@ function keyEvent(e) {
 // }
 
 
-
 // let c = await logseq.Editor.getCurrentBlock()
 // let a = await logseq.Editor.getPageBlocksTree()
 // let v = await logseq.Editor.getEditingCursorPosition()
@@ -70,9 +69,10 @@ function keyEvent(e) {
 // scrollToBlockInPage
 
 
-
 // const viewHeight = top.document.querySelector('#main-content-container').clientHeight
 // const viewPos = top.document.querySelector('#main-content-container').scrollTop
 // const newPos = viewPos + (viewHeight / 2)
 // top.document.querySelector('#main-content-container').scrollTop=newPos
 //
+
+

@@ -1,6 +1,6 @@
 {
   "name": "vim-wyatt-logseq-plugin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "author": "wyattJ",
   "description": "make logseq editting like vim",
   "license": "MIT",
