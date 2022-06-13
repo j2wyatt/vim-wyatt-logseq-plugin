@@ -1,6 +1,11 @@
 # vim-wyatt-logseq-plugin
 这个插件的目的是让 logseq 拥有 vim 一样的编辑体验
 
+
+中文文档 [README.zh-CN.md](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/blob/main/README.zh-CN.md "中文版")
+
+直接解压版 [压缩包](https://github.com/j-wyatt-a/vim-wyatt-logseq-plugin/releases/download/1.1.0/vim-wyatt-logseq-plugin.zip )
+
 ![功能展示](./public/demo.gif "happy hacking")
 ## 支持的键位
 - `j` 向下移动光标
