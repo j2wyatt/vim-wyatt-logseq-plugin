@@ -19,5 +19,8 @@
   "devDependencies": {
     "@logseq/libs": "^0.0.6",
     "parcel": "^2.0.0"
+  },
+  "dependencies": {
+    "tiny-pinyin": "^1.3.2"
   }
 }
